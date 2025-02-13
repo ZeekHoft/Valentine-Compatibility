@@ -4,8 +4,7 @@ import time
 import numpy as np
 
 # Load the pre-trained Haar Cascade classifier for face detection
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # Function to detect faces in an image
 def detect_faces(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
