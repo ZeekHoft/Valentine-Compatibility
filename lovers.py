@@ -49,12 +49,14 @@ cap.set(4, 720)   # Set height
 steady_start_time = None
 compatibility = None
 message = None
+show_timer = True  # Control whether to show the timer
 
 def reset_compatibility():
-    global compatibility, steady_start_time, message
+    global compatibility, steady_start_time, message, show_timer
     compatibility = None
     steady_start_time = None
     message = None
+    show_timer = True  # Reset the timer display
 
 while True:
     ret, frame = cap.read()
@@ -68,7 +70,8 @@ while True:
             steady_start_time = time.time()  # Start the timer
         else:
             elapsed_time = time.time() - steady_start_time
-            cv2.putText(frame, f'Compatibility in {5 - int(elapsed_time)} sec... <3', (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (180, 105, 255), 2)  # Pink text
+            if show_timer:
+                cv2.putText(frame, f'Compatibility in {5 - int(elapsed_time)} sec... <3', (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (180, 105, 255), 2)  # Pink text
             if elapsed_time >= 5 and compatibility is None:  # Faces steady for 5 seconds
                 compatibility = random.randint(30, 100)
                 if 30 <= compatibility <= 40:
@@ -83,6 +86,7 @@ while True:
                     message = 'Hmm... Love does exist between you two. <3'
                 elif 95 <= compatibility <= 100:
                     message = 'Do I hear wedding bells? <3'
+                show_timer = False  # Stop showing the timer
     else:
         if steady_start_time is not None:
             steady_start_time = None  # Reset timer if not exactly two faces
